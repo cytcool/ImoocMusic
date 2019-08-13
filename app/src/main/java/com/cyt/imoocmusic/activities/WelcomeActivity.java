@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cyt.imoocmusic.R;
+import com.cyt.imoocmusic.utils.UserUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,12 +25,17 @@ public class WelcomeActivity extends BaseActivity {
      * 初始化
      */
     private void init(){
+        final boolean isLogin = UserUtils.validateUserLogin(this);
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
 //                toMain();
-                toLogin();
+                if (isLogin){
+                    toMain();
+                }else {
+                    toLogin();
+                }
             }
         },3000);
     }

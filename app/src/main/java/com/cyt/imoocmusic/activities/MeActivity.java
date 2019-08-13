@@ -2,12 +2,17 @@ package com.cyt.imoocmusic.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.cyt.imoocmusic.R;
+import com.cyt.imoocmusic.helps.UserHelper;
 import com.cyt.imoocmusic.utils.UserUtils;
 
 public class MeActivity extends BaseActivity {
+
+    private TextView mTvUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +24,9 @@ public class MeActivity extends BaseActivity {
 
     private void initView() {
         initNavBar(true,"个人中心",false);
+        mTvUser = fd(R.id.tv_user);
+        Log.d("Phone",UserHelper.getInstance().getPhone());
+        mTvUser.setText("用户名：" + UserHelper.getInstance().getPhone());
     }
 
     /**

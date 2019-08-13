@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.cyt.imoocmusic.R;
+import com.cyt.imoocmusic.utils.UserUtils;
 import com.cyt.imoocmusic.views.InputView;
 
 public class LoginActivity extends BaseActivity {
@@ -53,10 +54,10 @@ public class LoginActivity extends BaseActivity {
         String phone = mInputPhone.getInputStr();
         String password = mInputPassword.getInputStr();
 
-//        // 验证用户输入是否合法
-//        if (!UserUtils.validateLogin(this,phone,password)){
-//            return;
-//        }
+        // 验证用户输入是否合法
+        if (!UserUtils.validateLogin(this,phone,password)){
+            return;
+        }
 
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
