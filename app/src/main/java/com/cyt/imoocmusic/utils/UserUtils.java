@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.cyt.imoocmusic.R;
 import com.cyt.imoocmusic.activities.LoginActivity;
 import com.cyt.imoocmusic.helps.RealmHelp;
+import com.cyt.imoocmusic.helps.UserHelper;
 import com.cyt.imoocmusic.models.UserModel;
 
 import java.util.List;
@@ -63,7 +64,11 @@ public class UserUtils {
         }
 
         // 保存用户标记，在全局单例类之中
+        UserHelper.getInstance().setPhone(phone);
 
+        // 保存音乐源数据
+        realmHelp.saveMusicSource(context);
+        realmHelp.close();
 
         return true;
     }
@@ -73,11 +78,17 @@ public class UserUtils {
      * @param context
      */
     public static void logout(Context context){
+        // 删除sp保存的用户标记
         boolean isRemove = SPUtils.removeUser(context);
         if (!isRemove){
             Toast.makeText(context, "系统错误，请稍后重试", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // 删除音乐源数据
+        RealmHelp realmHelp = new RealmHelp();
+        realmHelp.removeMusicSource();
+        realmHelp.close();
 
         Intent intent = new Intent(context, LoginActivity.class);
         // 添加Intent标志符，清理task栈，新生成一个task栈

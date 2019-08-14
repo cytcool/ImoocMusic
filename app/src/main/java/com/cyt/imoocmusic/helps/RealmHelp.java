@@ -1,10 +1,19 @@
 package com.cyt.imoocmusic.helps;
 
-import com.cyt.imoocmusic.models.UserModel;
+import android.content.Context;
 
+import com.cyt.imoocmusic.migration.Migration;
+import com.cyt.imoocmusic.models.AlbumModel;
+import com.cyt.imoocmusic.models.MusicModel;
+import com.cyt.imoocmusic.models.MusicSourceModel;
+import com.cyt.imoocmusic.models.UserModel;
+import com.cyt.imoocmusic.utils.DataUtils;
+
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
@@ -14,6 +23,36 @@ public class RealmHelp {
 
     public RealmHelp(){
         mRealm = Realm.getDefaultInstance();
+    }
+
+    /**
+     * Realm数据库发生结果变化时，需要对数据库进行数据迁移
+     */
+
+    /**
+     * 告诉Realm数据需要迁移，并且为Realm设置最新的配置
+     */
+    public static void migration(){
+        RealmConfiguration conf = getRealmConf();
+
+        // 为Realm设置最新的配置
+        Realm.setDefaultConfiguration(conf);
+        // 告诉Realm数据需要迁移
+        try {
+            Realm.migrateRealm(conf);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 返回 RealmConfiguration
+     */
+    private static RealmConfiguration getRealmConf(){
+        return new RealmConfiguration.Builder()
+                .schemaVersion(1)
+                .migration(new Migration())
+                .build();
     }
 
     /**
@@ -82,6 +121,28 @@ public class RealmHelp {
         UserModel userModel = getUser();
         mRealm.beginTransaction();
         userModel.setPassword(password);
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * 保存音乐源数据
+     */
+    public void saveMusicSource(Context context){
+
+        String musicSourceJson = DataUtils.getJsonFromAssets(context,"DataSource.json");
+        mRealm.beginTransaction();
+        mRealm.createObjectFromJson(MusicSourceModel.class,musicSourceJson);
+        mRealm.commitTransaction();
+    }
+
+    /**
+     * 删除音乐源数据
+     */
+    public void removeMusicSource(){
+        mRealm.beginTransaction();
+        mRealm.delete(MusicSourceModel.class);
+        mRealm.delete(MusicModel.class);
+        mRealm.delete(AlbumModel.class);
         mRealm.commitTransaction();
     }
 }
