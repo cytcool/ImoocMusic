@@ -17,11 +17,11 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-public class RealmHelp {
+public class RealmHelper {
 
     private Realm mRealm;
 
-    public RealmHelp(){
+    public RealmHelper(){
         mRealm = Realm.getDefaultInstance();
     }
 
@@ -144,5 +144,26 @@ public class RealmHelp {
         mRealm.delete(MusicModel.class);
         mRealm.delete(AlbumModel.class);
         mRealm.commitTransaction();
+    }
+
+    /**
+     * 返回音乐源数据
+     */
+    public MusicSourceModel getMusicSource(){
+        return mRealm.where(MusicSourceModel.class).findFirst();
+    }
+
+    /**
+     * 返回歌单数据
+     */
+    public AlbumModel getAlbum(String albumId){
+        return mRealm.where(AlbumModel.class).equalTo("albumId",albumId).findFirst();
+    }
+
+    /**
+     * 返回音乐数据
+     */
+    public MusicModel getMusic(String musicId){
+        return mRealm.where(MusicModel.class).equalTo("musicId",musicId).findFirst();
     }
 }

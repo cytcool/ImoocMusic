@@ -6,6 +6,12 @@ import android.net.Uri;
 
 import java.io.IOException;
 
+/**
+ * 播放音乐的方式
+ * 1、直接在Activity中创建播放音乐，音乐与Activity绑定
+ * 2、通过全局单例类与Application绑定
+ * 3、通过Service进行音乐播放
+ */
 public class MediaPlayerHelp {
 
     private Context mContext;
@@ -47,12 +53,13 @@ public class MediaPlayerHelp {
          * 3、准备播放
          */
 
-        mPath = path;
+
         // 1、音乐正在播放，充值音乐播放状态
-        if (mMediaPlayer.isPlaying()){
+        if (mMediaPlayer.isPlaying() || !path.equals(mPath)){
             mMediaPlayer.reset();
         }
 
+        mPath = path;
         // 2、设置播放音乐的路径
         try {
             mMediaPlayer.setDataSource(mContext, Uri.parse(mPath));

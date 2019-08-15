@@ -1,6 +1,5 @@
 package com.cyt.imoocmusic.migration;
 
-import com.cyt.imoocmusic.models.MusicSourceModel;
 
 import io.realm.DynamicRealm;
 import io.realm.RealmMigration;

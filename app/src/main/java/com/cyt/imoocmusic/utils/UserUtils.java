@@ -11,7 +11,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.cyt.imoocmusic.R;
 import com.cyt.imoocmusic.activities.LoginActivity;
-import com.cyt.imoocmusic.helps.RealmHelp;
+import com.cyt.imoocmusic.helps.RealmHelper;
 import com.cyt.imoocmusic.helps.UserHelper;
 import com.cyt.imoocmusic.models.UserModel;
 
@@ -48,9 +48,8 @@ public class UserUtils {
             return false;
         }
 
-        RealmHelp realmHelp = new RealmHelp();
-        boolean result = realmHelp.validateUser(phone,EncryptUtils.encryptMD5ToString(password));
-        realmHelp.close();
+        RealmHelper realmHelper = new RealmHelper();
+        boolean result = realmHelper.validateUser(phone,EncryptUtils.encryptMD5ToString(password));
         if (!result){
             Toast.makeText(context, "手机号或密码不正确", Toast.LENGTH_SHORT).show();
             return false;
@@ -67,8 +66,9 @@ public class UserUtils {
         UserHelper.getInstance().setPhone(phone);
 
         // 保存音乐源数据
-        realmHelp.saveMusicSource(context);
-        realmHelp.close();
+        realmHelper.saveMusicSource(context);
+
+        realmHelper.close();
 
         return true;
     }
@@ -86,9 +86,9 @@ public class UserUtils {
         }
 
         // 删除音乐源数据
-        RealmHelp realmHelp = new RealmHelp();
-        realmHelp.removeMusicSource();
-        realmHelp.close();
+        RealmHelper realmHelper = new RealmHelper();
+        realmHelper.removeMusicSource();
+        realmHelper.close();
 
         Intent intent = new Intent(context, LoginActivity.class);
         // 添加Intent标志符，清理task栈，新生成一个task栈
@@ -136,9 +136,9 @@ public class UserUtils {
      * @param userModel
      */
     public static void saveUser(UserModel userModel){
-        RealmHelp realmHelp = new RealmHelp();
-        realmHelp.saveUser(userModel);
-        realmHelp.close();
+        RealmHelper realmHelper = new RealmHelper();
+        realmHelper.saveUser(userModel);
+        realmHelper.close();
     }
 
     /**
@@ -149,8 +149,8 @@ public class UserUtils {
     public static boolean userExistFromPhone(String phone){
         boolean result = false;
         
-        RealmHelp realmHelp = new RealmHelp();
-        List<UserModel> allUser = realmHelp.getAllUser();
+        RealmHelper realmHelper = new RealmHelper();
+        List<UserModel> allUser = realmHelper.getAllUser();
         for (UserModel userModel:allUser) {
             if (userModel.getPhone().equals(phone)){
                 result = true;
@@ -158,7 +158,7 @@ public class UserUtils {
             }
         }
 
-        realmHelp.close();
+        realmHelper.close();
 
         return result;
     }
@@ -187,8 +187,8 @@ public class UserUtils {
         }
 
         // 验证原密码是否正确
-        RealmHelp realmHelp = new RealmHelp();
-        UserModel userModel = realmHelp.getUser();
+        RealmHelper realmHelper = new RealmHelper();
+        UserModel userModel = realmHelper.getUser();
 
 
         if (!EncryptUtils.encryptMD5ToString(oldPassword).equals(userModel.getPassword())){
@@ -196,9 +196,9 @@ public class UserUtils {
             return false;
         }
 
-        realmHelp.changePassword(EncryptUtils.encryptMD5ToString(password));
+        realmHelper.changePassword(EncryptUtils.encryptMD5ToString(password));
 
-        realmHelp.close();
+        realmHelper.close();
 
         return true;
 

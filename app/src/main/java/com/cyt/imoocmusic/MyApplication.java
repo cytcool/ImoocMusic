@@ -3,7 +3,7 @@ package com.cyt.imoocmusic;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
-import com.cyt.imoocmusic.helps.RealmHelp;
+import com.cyt.imoocmusic.helps.RealmHelper;
 
 import io.realm.Realm;
 
@@ -15,6 +15,6 @@ public class MyApplication extends Application {
         Utils.init(this);
         Realm.init(this);
 
-        RealmHelp.migration();
+        RealmHelper.migration();
     }
 }
