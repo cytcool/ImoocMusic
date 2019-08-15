@@ -58,8 +58,8 @@ public class PlayMusicActivity extends BaseActivity {
         mTvAuthor.setText(mMusicModel.getAuthor());
 
         mPlayMusicView = fd(R.id.play_music_view);
-        mPlayMusicView.setMusicIcon(mMusicModel.getPoster());
-        mPlayMusicView.playMusic(mMusicModel.getPath());
+        mPlayMusicView.setMusic(mMusicModel);
+        mPlayMusicView.playMusic();
     }
 
     /**
@@ -73,6 +73,7 @@ public class PlayMusicActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mPlayMusicView.destroy();
         mRealmHelper.close();
     }
 }

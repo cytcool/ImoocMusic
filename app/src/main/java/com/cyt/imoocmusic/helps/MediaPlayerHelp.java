@@ -78,6 +78,16 @@ public class MediaPlayerHelp {
             }
         });
 
+        // 监听音乐播放完成
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (onMediaPlayerHelperListener != null){
+                    onMediaPlayerHelperListener.onCompletion(mediaPlayer);
+                }
+            }
+        });
+
 
     }
 
@@ -106,5 +116,6 @@ public class MediaPlayerHelp {
 
     public interface OnMediaPlayerHelperListener{
         void onPrepared(MediaPlayer mp);
+        void onCompletion(MediaPlayer mp);
     }
 }
